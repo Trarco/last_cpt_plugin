@@ -15,6 +15,13 @@ Last CPT Plugin is a WordPress plugin that allows you to display the latest post
 2. Upload the plugin ZIP file via the Plugins > Add New > Upload Plugin menu.
 3. Activate the plugin from the list of installed plugins.
 
+## Tested With WordPress and PHP
+
+This plugin has been tested with:
+
+- WordPress version 6.5
+- PHP version 8.0
+
 ## Usage
 
 ### Shortcode
@@ -49,7 +56,6 @@ We welcome contributions and suggestions for improving the plugin. If you have i
 
 This plugin is released under the MIT license. See the [LICENSE](LICENSE) file for details.
 
-
 # Last CPT Plugin (ITALIANO)
 
 Last CPT Plugin è un plugin per WordPress che consente di mostrare gli ultimi post di un tipo di post personalizzato.
@@ -67,6 +73,13 @@ Last CPT Plugin è un plugin per WordPress che consente di mostrare gli ultimi p
 2. Carica il file ZIP del plugin tramite il menu Plugin > Aggiungi nuovo > Carica plugin.
 3. Attiva il plugin dall'elenco dei plugin installati.
 
+## Testato Con WordPress e PHP
+
+Questo plugin è stato testato con:
+
+- WordPress versione 6.5
+- PHP versione 8.0
+
 ## Utilizzo
 
 ### Shortcode
@@ -80,7 +93,6 @@ Utilizza lo shortcode `[last_cpt]` nei tuoi contenuti per visualizzare gli ultim
 
 Esempio:
 [last_cpt tipo="nome_custom_post_type" numero="5" show_thumbnail="true" thumbnail_size="full"]
-
 
 ### Widget
 

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Last CPT Plugin
-Description: Mostra gli ultimi post di un tipo di post personalizzato.
+Description: Last CPT Plugin is a WordPress plugin that allows you to display the latest posts of a custom post type.
 Version: 1.0
 Author: Marco Traina
 */
@@ -64,7 +64,7 @@ function show_last_cpt($atts)
 
     return $output;
 }
-// Registra lo shortcode [last_cpt tipo="nome_custom_post_type" numero="5"]
+// Registra lo shortcode
 add_shortcode('last_cpt', 'show_last_cpt');
 
 // Aggiungi il supporto per il blocco di Gutenberg
