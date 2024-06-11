@@ -36,7 +36,7 @@ function show_last_cpt($atts)
     $query = new WP_Query($args);
 
     // Inizia l'output
-    $output = '<ul>';
+    $output = '<ul class="last-cpt-list" id="last-cpt-list-' . $atts['tipo'] . '">';
 
     // Verifica se ci sono post da mostrare
     if ($query->have_posts()) {
@@ -176,3 +176,9 @@ function register_last_cpt_widget()
     register_widget('Last_CPT_Widget');
 }
 add_action('widgets_init', 'register_last_cpt_widget');
+
+function custom_last_cpt_styles()
+{
+    wp_enqueue_style('custom-last-cpt-styles', plugins_url('/custom-last-cpt-styles.css', __FILE__));
+}
+add_action('wp_enqueue_scripts', 'custom_last_cpt_styles');
