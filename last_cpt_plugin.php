@@ -112,8 +112,12 @@ class Last_CPT_Widget extends WP_Widget
         $numero = !empty($instance['numero']) ? $instance['numero'] : 5;
         $show_thumbnail = isset($instance['show_thumbnail']) ? (bool) $instance['show_thumbnail'] : false;
         $thumbnail_size = !empty($instance['thumbnail_size']) ? $instance['thumbnail_size'] : 'thumbnail';
+        $title = apply_filters('widget_title', $instance['title']);
 
         echo $args['before_widget'];
+        if (!empty($title)) {
+            echo $args['before_title'] . $title . $args['after_title'];
+        }
         echo show_last_cpt(array(
             'tipo' => $tipo,
             'numero' => $numero,
@@ -130,7 +134,13 @@ class Last_CPT_Widget extends WP_Widget
         $numero = !empty($instance['numero']) ? $instance['numero'] : 5;
         $show_thumbnail = isset($instance['show_thumbnail']) ? (bool) $instance['show_thumbnail'] : false;
         $thumbnail_size = !empty($instance['thumbnail_size']) ? $instance['thumbnail_size'] : 'thumbnail';
+        $title = isset($instance['title']) ? esc_attr($instance['title']) : '';
+
 ?>
+        <p>
+            <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+        </p>
         <p>
             <label for="<?php echo esc_attr($this->get_field_id('tipo')); ?>">Tipo di post:</label>
             <select class="widefat" id="<?php echo esc_attr($this->get_field_id('tipo')); ?>" name="<?php echo esc_attr($this->get_field_name('tipo')); ?>">
@@ -166,6 +176,7 @@ class Last_CPT_Widget extends WP_Widget
         $instance['numero'] = (!empty($new_instance['numero'])) ? intval($new_instance['numero']) : 5;
         $instance['show_thumbnail'] = isset($new_instance['show_thumbnail']) ? (bool) $new_instance['show_thumbnail'] : false;
         $instance['thumbnail_size'] = (!empty($new_instance['thumbnail_size'])) ? sanitize_text_field($new_instance['thumbnail_size']) : 'thumbnail';
+        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
         return $instance;
     }
 }
@@ -176,6 +187,7 @@ function register_last_cpt_widget()
     register_widget('Last_CPT_Widget');
 }
 add_action('widgets_init', 'register_last_cpt_widget');
+
 
 function custom_last_cpt_styles()
 {
