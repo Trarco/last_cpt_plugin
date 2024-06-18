@@ -2,7 +2,7 @@
 /*
 Plugin Name: Last CPT Plugin
 Description: Last CPT Plugin is a WordPress plugin that allows you to display the latest posts of a custom post type.
-Version: 1.0
+Version: 1.1
 Author: Marco Traina
 */
 
@@ -11,8 +11,7 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-function show_last_cpt($atts)
-{
+function show_last_cpt($atts) {
     // Estrai gli attributi e imposta i valori di default
     $atts = shortcode_atts(
         array(
@@ -68,8 +67,7 @@ function show_last_cpt($atts)
 add_shortcode('last_cpt', 'show_last_cpt');
 
 // Aggiungi il supporto per il blocco di Gutenberg
-function last_cpt_register_block()
-{
+function last_cpt_register_block() {
     // Registra l'editor script
     wp_register_script(
         'last-cpt-block',
@@ -95,10 +93,8 @@ function last_cpt_register_block()
 add_action('init', 'last_cpt_register_block');
 
 // Crea il widget
-class Last_CPT_Widget extends WP_Widget
-{
-    public function __construct()
-    {
+class Last_CPT_Widget extends WP_Widget {
+    public function __construct() {
         parent::__construct(
             'last_cpt_widget',
             'Last CPT Widget',
@@ -106,8 +102,7 @@ class Last_CPT_Widget extends WP_Widget
         );
     }
 
-    public function widget($args, $instance)
-    {
+    public function widget($args, $instance) {
         $tipo = !empty($instance['tipo']) ? $instance['tipo'] : 'post';
         $numero = !empty($instance['numero']) ? $instance['numero'] : 5;
         $show_thumbnail = isset($instance['show_thumbnail']) ? (bool) $instance['show_thumbnail'] : false;
@@ -127,8 +122,7 @@ class Last_CPT_Widget extends WP_Widget
         echo $args['after_widget'];
     }
 
-    public function form($instance)
-    {
+    public function form($instance) {
         $post_types = get_post_types(array('public' => true), 'objects');
         $tipo = !empty($instance['tipo']) ? $instance['tipo'] : 'post';
         $numero = !empty($instance['numero']) ? $instance['numero'] : 5;
@@ -136,7 +130,7 @@ class Last_CPT_Widget extends WP_Widget
         $thumbnail_size = !empty($instance['thumbnail_size']) ? $instance['thumbnail_size'] : 'thumbnail';
         $title = isset($instance['title']) ? esc_attr($instance['title']) : '';
 
-?>
+        ?>
         <p>
             <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
             <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
@@ -145,52 +139,109 @@ class Last_CPT_Widget extends WP_Widget
             <label for="<?php echo esc_attr($this->get_field_id('tipo')); ?>">Tipo di post:</label>
             <select class="widefat" id="<?php echo esc_attr($this->get_field_id('tipo')); ?>" name="<?php echo esc_attr($this->get_field_name('tipo')); ?>">
                 <?php foreach ($post_types as $post_type) : ?>
-                    <option value="<?php echo esc_attr($post_type->name); ?>" <?php selected($tipo, $post_type->name); ?>>
-                        <?php echo esc_html($post_type->labels->singular_name); ?>
-                    </option>
+                    <option value="<?php echo esc_attr($post_type->name); ?>" <?php selected($tipo, $post_type->name); ?>><?php echo esc_html($post_type->labels->singular_name); ?></option>
                 <?php endforeach; ?>
             </select>
         </p>
         <p>
-            <label for="<?php echo esc_attr($this->get_field_id('numero')); ?>">Numero di post:</label>
-            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('numero')); ?>" name="<?php echo esc_attr($this->get_field_name('numero')); ?>" type="number" value="<?php echo esc_attr($numero); ?>">
+            <label for="<?php echo $this->get_field_id('numero'); ?>">Numero di post:</label>
+            <input class="tiny-text" id="<?php echo $this->get_field_id('numero'); ?>" name="<?php echo $this->get_field_name('numero'); ?>" type="number" step="1" min="1" value="<?php echo esc_attr($numero); ?>" size="3" />
         </p>
         <p>
-            <input class="checkbox" type="checkbox" <?php checked($show_thumbnail); ?> id="<?php echo esc_attr($this->get_field_id('show_thumbnail')); ?>" name="<?php echo esc_attr($this->get_field_name('show_thumbnail')); ?>" />
-            <label for="<?php echo esc_attr($this->get_field_id('show_thumbnail')); ?>">Mostra thumbnail</label>
+            <input class="checkbox" type="checkbox" <?php checked($show_thumbnail); ?> id="<?php echo $this->get_field_id('show_thumbnail'); ?>" name="<?php echo $this->get_field_name('show_thumbnail'); ?>" />
+            <label for="<?php echo $this->get_field_id('show_thumbnail'); ?>">Mostra thumbnail</label>
         </p>
         <p>
-            <label for="<?php echo esc_attr($this->get_field_id('thumbnail_size')); ?>">Dimensione thumbnail:</label>
-            <select class="widefat" id="<?php echo esc_attr($this->get_field_id('thumbnail_size')); ?>" name="<?php echo esc_attr($this->get_field_name('thumbnail_size')); ?>">
+            <label for="<?php echo $this->get_field_id('thumbnail_size'); ?>">Dimensione thumbnail:</label>
+            <select class="widefat" id="<?php echo $this->get_field_id('thumbnail_size'); ?>" name="<?php echo $this->get_field_name('thumbnail_size'); ?>">
                 <option value="thumbnail" <?php selected($thumbnail_size, 'thumbnail'); ?>>Thumbnail</option>
                 <option value="full" <?php selected($thumbnail_size, 'full'); ?>>Full</option>
             </select>
         </p>
-<?php
+        <?php
     }
 
-    public function update($new_instance, $old_instance)
-    {
+    public function update($new_instance, $old_instance) {
         $instance = array();
-        $instance['tipo'] = (!empty($new_instance['tipo'])) ? sanitize_text_field($new_instance['tipo']) : 'post';
+        $instance['title'] = (!empty($new_instance['title'])) ? strip_tags($new_instance['title']) : '';
+        $instance['tipo'] = (!empty($new_instance['tipo'])) ? strip_tags($new_instance['tipo']) : 'post';
         $instance['numero'] = (!empty($new_instance['numero'])) ? intval($new_instance['numero']) : 5;
         $instance['show_thumbnail'] = isset($new_instance['show_thumbnail']) ? (bool) $new_instance['show_thumbnail'] : false;
-        $instance['thumbnail_size'] = (!empty($new_instance['thumbnail_size'])) ? sanitize_text_field($new_instance['thumbnail_size']) : 'thumbnail';
-        $instance['title'] = (!empty($new_instance['title'])) ? sanitize_text_field($new_instance['title']) : '';
+        $instance['thumbnail_size'] = (!empty($new_instance['thumbnail_size'])) ? strip_tags($new_instance['thumbnail_size']) : 'thumbnail';
         return $instance;
     }
 }
-
-// Registra il widget
-function register_last_cpt_widget()
-{
+function register_last_cpt_widget() {
     register_widget('Last_CPT_Widget');
 }
 add_action('widgets_init', 'register_last_cpt_widget');
 
-
-function custom_last_cpt_styles()
-{
-    wp_enqueue_style('custom-last-cpt-styles', plugins_url('/custom-last-cpt-styles.css', __FILE__));
+// Aggiungi la pagina delle impostazioni
+function last_cpt_add_admin_menu() {
+    add_options_page(
+        'Last CPT Settings', // Titolo della pagina
+        'Last CPT', // Nome del menu
+        'manage_options', // Capacità richiesta
+        'last_cpt', // Slug del menu
+        'last_cpt_options_page' // Funzione callback per la pagina delle impostazioni
+    );
 }
-add_action('wp_enqueue_scripts', 'custom_last_cpt_styles');
+add_action('admin_menu', 'last_cpt_add_admin_menu');
+
+// Registra le impostazioni
+function last_cpt_settings_init() {
+    register_setting('lastCpt', 'last_cpt_settings');
+
+    add_settings_section(
+        'last_cpt_section', 
+        __('Custom CSS Settings', 'last_cpt'), 
+        'last_cpt_settings_section_callback', 
+        'lastCpt'
+    );
+
+    add_settings_field(
+        'last_cpt_custom_css', 
+        __('Custom CSS', 'last_cpt'), 
+        'last_cpt_custom_css_render', 
+        'lastCpt', 
+        'last_cpt_section'
+    );
+}
+add_action('admin_init', 'last_cpt_settings_init');
+
+// Callback per la sezione delle impostazioni
+function last_cpt_settings_section_callback() {
+    echo __('Enter your custom CSS to style the list of posts.', 'last_cpt');
+}
+
+// Campo per inserire il CSS personalizzato
+function last_cpt_custom_css_render() {
+    $options = get_option('last_cpt_settings');
+    ?>
+    <textarea cols='60' rows='10' name='last_cpt_settings[last_cpt_custom_css]'><?php echo $options['last_cpt_custom_css']; ?></textarea>
+    <?php
+}
+
+// Funzione callback per la pagina delle impostazioni
+function last_cpt_options_page() {
+    ?>
+    <form action='options.php' method='post'>
+        <h2>Last CPT Settings</h2>
+        <?php
+        settings_fields('lastCpt');
+        do_settings_sections('lastCpt');
+        submit_button();
+        ?>
+    </form>
+    <?php
+}
+
+// Carica il CSS personalizzato dalle impostazioni
+function last_cpt_custom_css() {
+    $options = get_option('last_cpt_settings');
+    if (!empty($options['last_cpt_custom_css'])) {
+        echo '<style type="text/css">' . $options['last_cpt_custom_css'] . '</style>';
+    }
+}
+add_action('wp_head', 'last_cpt_custom_css');
+?>
