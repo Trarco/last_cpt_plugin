@@ -43,49 +43,6 @@
 
       return [
         el(
-          "div",
-          { className: props.className },
-          "Last CPT Block",
-          el(SelectControl, {
-            label: "Tipo di post:",
-            value: attributes.tipo,
-            options: postTypesOptions,
-            onChange: function (newTipo) {
-              setAttributes({ tipo: newTipo });
-            },
-          }),
-          el(
-            "div",
-            {},
-            el("label", {}, "Numero di post:"),
-            el("input", {
-              type: "number",
-              value: attributes.numero,
-              onChange: function (event) {
-                setAttributes({ numero: parseInt(event.target.value) });
-              },
-            })
-          ),
-          el(ToggleControl, {
-            label: "Mostra thumbnail",
-            checked: attributes.show_thumbnail,
-            onChange: function (newShowThumbnail) {
-              setAttributes({ show_thumbnail: newShowThumbnail });
-            },
-          }),
-          el(SelectControl, {
-            label: "Dimensione thumbnail:",
-            value: attributes.thumbnail_size,
-            options: [
-              { label: "Thumbnail", value: "thumbnail" },
-              { label: "Full", value: "full" },
-            ],
-            onChange: function (newSize) {
-              setAttributes({ thumbnail_size: newSize });
-            },
-          })
-        ),
-        el(
           InspectorControls,
           {},
           el(
@@ -111,7 +68,7 @@
                 type: "number",
                 value: attributes.numero,
                 onChange: function (event) {
-                  setAttributes({ numero: parseInt(event.target.value) });
+                  setAttributes({ numero: parseInt(event.target.value, 10) });
                 },
               })
             ),
@@ -135,16 +92,53 @@
             })
           )
         ),
+        el(
+          "div",
+          { className: props.className },
+          "Last CPT Block",
+          el(SelectControl, {
+            label: "Tipo di post:",
+            value: attributes.tipo,
+            options: postTypesOptions,
+            onChange: function (newTipo) {
+              setAttributes({ tipo: newTipo });
+            },
+          }),
+          el(
+            "div",
+            {},
+            el("label", {}, "Numero di post:"),
+            el("input", {
+              type: "number",
+              value: attributes.numero,
+              onChange: function (event) {
+                setAttributes({ numero: parseInt(event.target.value, 10) });
+              },
+            })
+          ),
+          el(ToggleControl, {
+            label: "Mostra thumbnail",
+            checked: attributes.show_thumbnail,
+            onChange: function (newShowThumbnail) {
+              setAttributes({ show_thumbnail: newShowThumbnail });
+            },
+          }),
+          el(SelectControl, {
+            label: "Dimensione thumbnail:",
+            value: attributes.thumbnail_size,
+            options: [
+              { label: "Thumbnail", value: "thumbnail" },
+              { label: "Full", value: "full" },
+            ],
+            onChange: function (newSize) {
+              setAttributes({ thumbnail_size: newSize });
+            },
+          })
+        ),
       ];
     },
     save: function () {
-      return null;
+      return null; // Gli attributi verranno gestiti dal server
     },
   });
-})(
-  window.wp.blocks,
-  window.wp.editor,
-  window.wp.element,
-  window.wp.components,
-  window.wp.data
-);
+})(window.wp.blocks, window.wp.editor, window.wp.element, window.wp.components);
