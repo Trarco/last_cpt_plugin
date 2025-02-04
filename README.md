@@ -39,7 +39,7 @@ Use the `[last_cpt]` shortcode in your content to display the latest posts of a 
 
 Example:
 ```shortcode
-[last_cpt type="custom_post_type_name" number="5" show_thumbnail="true" thumbnail_size="full" category="news"]
+[last_cpt type="custom_post_type_name" number="5" show_thumbnail="true" thumbnail_size="full" category="news"] ```
 
 ### Widget
 After activating the plugin, you'll find the "Last CPT Widget" available in the WordPress widget area. Add the widget to the desired area and customize its display options, including post type, category, and thumbnail display.
