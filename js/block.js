@@ -26,6 +26,10 @@
         type: "string",
         default: "thumbnail",
       },
+      categoria: {
+        type: "string",
+        default: "",
+      },
     },
     edit: function (props) {
       var attributes = props.attributes;
@@ -41,6 +45,16 @@
         };
       });
 
+      // Controlla se i dati delle categorie sono disponibili
+      var categoriesOptions = lastCptData.categories
+        ? lastCptData.categories.map(function (category) {
+            return {
+              label: category.name,
+              value: category.slug,
+            };
+          })
+        : [];
+
       return [
         el(
           InspectorControls,
@@ -54,6 +68,14 @@
               options: postTypesOptions,
               onChange: function (newTipo) {
                 setAttributes({ tipo: newTipo });
+              },
+            }),
+            el(SelectControl, {
+              label: "Categoria:",
+              value: attributes.categoria,
+              options: categoriesOptions,
+              onChange: function (newCategoria) {
+                setAttributes({ categoria: newCategoria });
               },
             }),
             el(
@@ -102,6 +124,14 @@
             options: postTypesOptions,
             onChange: function (newTipo) {
               setAttributes({ tipo: newTipo });
+            },
+          }),
+          el(SelectControl, {
+            label: "Categoria:",
+            value: attributes.categoria,
+            options: categoriesOptions,
+            onChange: function (newCategoria) {
+              setAttributes({ categoria: newCategoria });
             },
           }),
           el(

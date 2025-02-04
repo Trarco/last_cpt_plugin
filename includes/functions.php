@@ -8,12 +8,17 @@ function show_last_cpt($atts)
         'numero' => 5,
         'show_thumbnail' => true,
         'thumbnail_size' => 'thumbnail',
+        'categoria' => '',
     ), $atts, 'last_cpt');
 
     $args = array(
         'post_type' => $atts['tipo'],
         'posts_per_page' => $atts['numero'],
     );
+
+    if (!empty($atts['categoria'])) {
+        $args['category_name'] = $atts['categoria'];
+    }
 
     $query = new WP_Query($args);
 
@@ -31,7 +36,7 @@ function show_last_cpt($atts)
         $output .= '</ul>';
         wp_reset_postdata();
     } else {
-        $output = '<p>' . __('No posts found', 'last_cpt') . '</p>';
+        $output = '<p>' . __('Nessun risultato trovato', 'last_cpt') . '</p>';
     }
 
     return $output;
@@ -41,5 +46,11 @@ add_shortcode('last_cpt', 'show_last_cpt');
 // Funzione di rendering del blocco
 function render_last_cpt_block($attributes)
 {
-    return show_last_cpt($attributes);
+    return show_last_cpt(array(
+        'tipo' => $attributes['tipo'],
+        'numero' => $attributes['numero'],
+        'show_thumbnail' => $attributes['show_thumbnail'],
+        'thumbnail_size' => $attributes['thumbnail_size'],
+        'categoria' => isset($attributes['categoria']) ? $attributes['categoria'] : '',
+    ));
 }

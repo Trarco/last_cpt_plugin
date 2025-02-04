@@ -2,7 +2,7 @@
 /*
 Plugin Name: Last CPT Plugin
 Description: Last CPT Plugin is a WordPress plugin that allows you to display the latest posts of a custom post type.
-Version: 1.0
+Version: 1.3.0
 Author: Marco Traina
 */
 

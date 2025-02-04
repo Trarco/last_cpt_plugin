@@ -19,6 +19,7 @@ class Last_CPT_Widget extends WP_Widget
         $show_thumbnail = isset($instance['show_thumbnail']) ? (bool) $instance['show_thumbnail'] : false;
         $thumbnail_size = !empty($instance['thumbnail_size']) ? $instance['thumbnail_size'] : 'thumbnail';
         $title = apply_filters('widget_title', $instance['title']);
+        $categoria = !empty($instance['categoria']) ? $instance['categoria'] : '';
 
         echo $args['before_widget'];
         if (!empty($title)) {
@@ -28,7 +29,8 @@ class Last_CPT_Widget extends WP_Widget
             'tipo' => $tipo,
             'numero' => $numero,
             'show_thumbnail' => $show_thumbnail,
-            'thumbnail_size' => $thumbnail_size
+            'thumbnail_size' => $thumbnail_size,
+            'categoria' => !empty($instance['categoria']) ? $instance['categoria'] : ''
         ));
         echo $args['after_widget'];
     }
@@ -41,6 +43,9 @@ class Last_CPT_Widget extends WP_Widget
         $show_thumbnail = isset($instance['show_thumbnail']) ? (bool) $instance['show_thumbnail'] : false;
         $thumbnail_size = !empty($instance['thumbnail_size']) ? $instance['thumbnail_size'] : 'thumbnail';
         $title = isset($instance['title']) ? esc_attr($instance['title']) : '';
+        $categoria = !empty($instance['categoria']) ? $instance['categoria'] : '';
+
+        $categories = get_categories(array('hide_empty' => false));
 
 ?>
         <p>
@@ -70,6 +75,16 @@ class Last_CPT_Widget extends WP_Widget
                 <option value="full" <?php selected($thumbnail_size, 'full'); ?>>Full</option>
             </select>
         </p>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('categoria')); ?>">Categoria:</label>
+            <select class="widefat" id="<?php echo esc_attr($this->get_field_id('categoria')); ?>" name="<?php echo esc_attr($this->get_field_name('categoria')); ?>">
+                <option value=""><?php _e('Tutte le categorie', 'text_domain'); ?></option>
+                <?php foreach ($categories as $cat) : ?>
+                    <option value="<?php echo esc_attr($cat->slug); ?>" <?php selected($categoria, $cat->slug); ?>><?php echo esc_html($cat->name); ?></option>
+                <?php endforeach; ?>
+            </select>
+        </p>
+
 <?php
     }
 
@@ -81,6 +96,7 @@ class Last_CPT_Widget extends WP_Widget
         $instance['numero'] = (!empty($new_instance['numero'])) ? intval($new_instance['numero']) : 5;
         $instance['show_thumbnail'] = isset($new_instance['show_thumbnail']) ? (bool) $new_instance['show_thumbnail'] : false;
         $instance['thumbnail_size'] = (!empty($new_instance['thumbnail_size'])) ? strip_tags($new_instance['thumbnail_size']) : 'thumbnail';
+        $instance['categoria'] = (!empty($new_instance['categoria'])) ? strip_tags($new_instance['categoria']) : '';
         return $instance;
     }
 }

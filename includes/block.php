@@ -24,9 +24,10 @@ function last_cpt_block_editor_assets()
         filemtime(plugin_dir_path(__FILE__) . '../js/block.js')
     );
 
-    // Localizza lo script con i dati dei tipi di post
+    // Localizza lo script con i dati dei tipi di post e delle categorie
     wp_localize_script('last-cpt-block-editor', 'lastCptData', array(
-        'postTypes' => get_post_types(array('public' => true), 'objects')
+        'postTypes' => get_post_types(array('public' => true), 'objects'),
+        'categories' => get_categories(array('hide_empty' => false))
     ));
 }
 add_action('enqueue_block_editor_assets', 'last_cpt_block_editor_assets');
