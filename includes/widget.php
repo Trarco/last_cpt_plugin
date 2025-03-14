@@ -20,6 +20,7 @@ class Last_CPT_Widget extends WP_Widget
         $thumbnail_size = !empty($instance['thumbnail_size']) ? $instance['thumbnail_size'] : 'thumbnail';
         $title = apply_filters('widget_title', $instance['title']);
         $categoria = !empty($instance['categoria']) ? $instance['categoria'] : '';
+        $randomize = isset($instance['randomize']) ? (bool) $instance['randomize'] : false;
 
         echo $args['before_widget'];
         if (!empty($title)) {
@@ -30,7 +31,8 @@ class Last_CPT_Widget extends WP_Widget
             'numero' => $numero,
             'show_thumbnail' => $show_thumbnail,
             'thumbnail_size' => $thumbnail_size,
-            'categoria' => !empty($instance['categoria']) ? $instance['categoria'] : ''
+            'categoria' => $categoria,
+            'randomize' => $randomize
         ));
         echo $args['after_widget'];
     }
@@ -44,6 +46,7 @@ class Last_CPT_Widget extends WP_Widget
         $thumbnail_size = !empty($instance['thumbnail_size']) ? $instance['thumbnail_size'] : 'thumbnail';
         $title = isset($instance['title']) ? esc_attr($instance['title']) : '';
         $categoria = !empty($instance['categoria']) ? $instance['categoria'] : '';
+        $randomize = isset($instance['randomize']) ? (bool) $instance['randomize'] : false;
 
         $categories = get_categories(array('hide_empty' => false));
 
@@ -76,6 +79,10 @@ class Last_CPT_Widget extends WP_Widget
             </select>
         </p>
         <p>
+            <input class="checkbox" type="checkbox" <?php checked($randomize); ?> id="<?php echo $this->get_field_id('randomize'); ?>" name="<?php echo $this->get_field_name('randomize'); ?>" />
+            <label for="<?php echo $this->get_field_id('randomize'); ?>">Casuale</label>
+        </p>
+        <p>
             <label for="<?php echo esc_attr($this->get_field_id('categoria')); ?>">Categoria:</label>
             <select class="widefat" id="<?php echo esc_attr($this->get_field_id('categoria')); ?>" name="<?php echo esc_attr($this->get_field_name('categoria')); ?>">
                 <option value=""><?php _e('Tutte le categorie', 'text_domain'); ?></option>
@@ -97,6 +104,7 @@ class Last_CPT_Widget extends WP_Widget
         $instance['show_thumbnail'] = isset($new_instance['show_thumbnail']) ? (bool) $new_instance['show_thumbnail'] : false;
         $instance['thumbnail_size'] = (!empty($new_instance['thumbnail_size'])) ? strip_tags($new_instance['thumbnail_size']) : 'thumbnail';
         $instance['categoria'] = (!empty($new_instance['categoria'])) ? strip_tags($new_instance['categoria']) : '';
+        $instance['randomize'] = isset($new_instance['randomize']) ? (bool) $new_instance['randomize'] : false;
         return $instance;
     }
 }

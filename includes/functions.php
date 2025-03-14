@@ -9,11 +9,13 @@ function show_last_cpt($atts)
         'show_thumbnail' => true,
         'thumbnail_size' => 'thumbnail',
         'categoria' => '',
+        'randomize' => false,
     ), $atts, 'last_cpt');
 
     $args = array(
         'post_type' => $atts['tipo'],
         'posts_per_page' => $atts['numero'],
+        'orderby' => !empty($atts['randomize']) && $atts['randomize'] ? 'rand' : 'date',
     );
 
     if (!empty($atts['categoria'])) {
@@ -52,5 +54,6 @@ function render_last_cpt_block($attributes)
         'show_thumbnail' => $attributes['show_thumbnail'],
         'thumbnail_size' => $attributes['thumbnail_size'],
         'categoria' => isset($attributes['categoria']) ? $attributes['categoria'] : '',
+        'randomize' => isset($attributes['randomize']) ? (bool) $attributes['randomize'] : false,
     ));
 }
