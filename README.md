@@ -9,6 +9,7 @@ Last CPT Plugin is a WordPress plugin that allows you to display the latest post
   - Show or hide thumbnails.
   - Define thumbnail size.
   - Filter posts by category.
+  - Randomize post order.
 - Integration with the Gutenberg editor for a visual editing experience.
 - Advanced customization options through support for custom CSS.
 
@@ -36,6 +37,7 @@ Use the `[last_cpt]` shortcode in your content to display the latest posts of a 
 - `show_thumbnail`: specify whether to show or hide thumbnails (accepted values: true or false, default: true).
 - `thumbnail_size`: specify the thumbnail size (accepted values: "thumbnail" or "full", default: "thumbnail").
 - `category`: specify the category to filter posts by (optional).
+- `randomize`: display posts in random order (accepted values: true or false, default: false).
 
 `[last_cpt type="custom_post_type_name" number="5" show_thumbnail="true" thumbnail_size="full" category="news"]`
 

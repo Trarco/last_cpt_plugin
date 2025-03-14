@@ -2,6 +2,20 @@
 
 All significant changes to this project will be documented in this file.
 
+## [1.4.0] - 2025-03-14
+
+### Added
+- Added an option to randomize the displayed posts in the widget and Gutenberg block.
+- Implemented a checkbox for enabling random post ordering in the widget settings.
+
+### Fixed
+- Fixed an issue where the "Randomize" option was not being saved properly in the widget.
+- Corrected an issue with the rendering of random posts when the checkbox was selected.
+
+### Improved
+- Enhanced the shortcode and Gutenberg block rendering to support post randomization.
+- Improved overall performance of database queries by refining the filtering logic.
+
 ## [1.3.0] - 2025-02-04
 
 ### Added
